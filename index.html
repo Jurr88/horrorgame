@@ -106,26 +106,6 @@
                     player.y -= player.speed;
                     break;
                 case 'ArrowDown':
-                    player
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlayer();
-            drawScream();
-            drawScore();
-        }
-
-        function gameLoop() {
-            update();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
-
-        window.addEventListener('keydown', (e) => {
-            switch (e.code) {
-                case 'ArrowUp':
-                    player.y -= player.speed;
-                    break;
-                case 'ArrowDown':
                     player.y += player.speed;
                     break;
                 case 'ArrowLeft':
