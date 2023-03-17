@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horrormarathon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #000;
+        }
+        canvas {
+            border: 1px solid #fff;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="640" height="480"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let screamCharacter = new Image();
+        screamCharacter.src = 'scream.png'; // Voeg hier de locatie van de Scream-afbeelding toe
+
+        let player = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            size: 32,
+            speed: 5
+        };
+
+        let scream = {
+            x: 0,
+            y: 0,
+            size: 32,
+            speed: 3
+        };
+
+        let score = 0;
+
+        function resetGame() {
+            player.x = canvas.width / 2;
+            player.y = canvas.height / 2;
+            scream.x = 0;
+            scream.y = 0;
+            score = 0;
+        }
+
+        function drawPlayer() {
+            ctx.drawImage(screamCharacter, player.x, player.y, player.size, player.size);
+        }
+
+        function drawScream() {
+            ctx.drawImage(screamCharacter, scream.x, scream.y, scream.size, scream.size);
+        }
+
+        function drawScore() {
+            ctx.font = "16px Arial";
+            ctx.fillStyle = "#FFF";
+            ctx.fillText("Score: " + score, 10, 20);
+        }
+
+        function update() {
+            scream.x += scream.speed;
+            if (scream.x > canvas.width) {
+                scream.x = -scream.size;
+                scream.y = Math.random() * (canvas.height - scream.size);
+                score++;
+            }
+
+            if (player.x < 0) player.x = 0;
+            if (player.y < 0) player.y = 0;
+            if (player.x + player.size > canvas.width) player.x = canvas.width - player.size;
+            if (player.y + player.size > canvas.height) player.y = canvas.height - player.size;
+
+            let dx = player.x - scream.x;
+            let dy = player.y - scream.y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < (player.size + scream.size) / 2) {
+                resetGame();
+            }
+        }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer();
+            drawScream();
+            drawScore();
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            switch (e.code) {
+                case 'ArrowUp':
+                    player.y -= player.speed;
+                    break;
+                case 'ArrowDown':
+                    player
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer();
+            drawScream();
+            drawScore();
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            switch (e.code) {
+                case 'ArrowUp':
+                    player.y -= player.speed;
+                    break;
+                case 'ArrowDown':
+                    player.y += player.speed;
+                    break;
+                case 'ArrowLeft':
+                    player.x -= player.speed;
+                    break;
+                case 'ArrowRight':
+                    player.x += player.speed;
+                    break;
+            }
+        });
+
+        gameLoop();
+    </script>
+</body>
+</html>
